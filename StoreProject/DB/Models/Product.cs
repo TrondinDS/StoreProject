@@ -11,6 +11,6 @@ namespace StoreProject.DB.Models
         public bool IsDeleted { get; set; }
         public virtual ProductType ProductType { get; set; }
         public int ProductId { get; set; }
-        public virtual ICollection<ProductInformation> ProductInformations { get; set; }
+        public virtual ICollection<OrderProductInformation> ProductInformations { get; set; }
     }
 }

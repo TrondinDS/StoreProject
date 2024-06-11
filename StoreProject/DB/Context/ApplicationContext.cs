@@ -16,7 +16,7 @@ namespace StoreProject.DB.Context
         public DbSet<OrderItem> ordersItem { get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<ProductType> productsType { get; set; }
-        public DbSet<ProductInformation> productInformation { get; set; }
+        public DbSet<OrderProductInformation> productInformation { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -30,7 +30,7 @@ namespace StoreProject.DB.Context
             modelBuilder.Entity<OrderItem>().HasQueryFilter(x => x.IsDeleted == false);
             modelBuilder.Entity<ProductType>().HasQueryFilter(x => x.IsDeleted == false);
             modelBuilder.Entity<Product>().HasQueryFilter(x => x.IsDeleted == false);
-            modelBuilder.Entity<ProductInformation>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<OrderProductInformation>().HasQueryFilter(x => x.IsDeleted == false);
         }
     }
 }

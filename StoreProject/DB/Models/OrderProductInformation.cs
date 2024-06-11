@@ -2,7 +2,7 @@
 
 namespace StoreProject.DB.Models
 {
-    public class ProductInformation : IsDelete
+    public class OrderProductInformation : IsDelete
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
