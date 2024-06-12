@@ -11,12 +11,12 @@ namespace StoreProject.DB.Context
             Database.EnsureCreated();
         }
 
-        public DbSet<User> users { get; set; }
-        public DbSet<Order> orders { get; set; }
-        public DbSet<OrderItem> ordersItem { get; set; }
-        public DbSet<Product> products { get; set; }
-        public DbSet<ProductType> productsType { get; set; }
-        public DbSet<OrderProductInformation> productInformation { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrdersItem { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductsType { get; set; }
+        public DbSet<OrderProductInformation> ProductInformation { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

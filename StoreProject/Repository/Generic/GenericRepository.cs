@@ -6,8 +6,8 @@ namespace StoreProject.Repository.Generic
 {
     public class GenericRepository<T, TId> : IGenericRepository<T, TId> where T : class
     {
-        readonly ApplicationContext _context;
-        readonly DbSet<T> dbSet;
+        protected readonly ApplicationContext _context;
+        protected readonly DbSet<T> dbSet;
 
         public GenericRepository(ApplicationContext context) 
         {
