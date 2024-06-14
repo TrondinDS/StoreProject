@@ -8,12 +8,50 @@ namespace StoreProject.Services
     {
         protected readonly IOrderRepository orderRepository;
         protected readonly IOrderItemRepository orderItemRepository;
-        protected readonly IOrderProductInformationRepository orderProductInformationRepository;
+        protected readonly IOrderInformationRepository orderProductInformationRepository;
         protected readonly IProductRepository productRepository;
 
         public async Task<Order> CreateOrder(int UserId, Dictionary<int, int> orders)
         {
-            //переделать
+            var productInOrderUnvaliable = await productRepository.GetCheckUnavailableProductsInOrderAsync(orders);
+
+            if (productInOrderUnvaliable.Any()) return null;
+
+            var requestedProducts = await productRepository.GetAllByIdAsync(orders.Select(x => x.Key).ToArray());
+            var requestedProductsDict = requestedProducts.ToDictionary(x => x.Id, x => x);
+
+            var orderItems = new List<OrderItem>();
+            var orderProductInformation = new List<OrderInformation>();
+
+            foreach (var orderItem in orders)
+            {
+                var newOrderItem = new OrderItem()
+                {
+                    ProductId = orderItem.Key
+                };
+
+                var newOrderProductInformation = new OrderInformation()
+                {
+                    OrderItem = newOrderItem,
+                    CountProduct = orderItem.Value
+                };
+
+                orderItems.Add(newOrderItem);
+                orderProductInformation.Add(newOrderProductInformation);
+            }
+            var newOrder = new Order()
+            {
+                DateCreate = DateTime.Now,
+                UserId = UserId,
+                OrderItems = orderItems
+            };
+
+            await productRepository.UpdateProductCount(orders);
+            await orderProductInformationRepository.AddAsync(orderProductInformation.ToArray());
+            await orderItemRepository.AddAsync(orderItems.ToArray());
+            await orderRepository.AddAsync(newOrder);
+            await orderItemRepository.SaveChangesAsync();
+            return newOrder;
         }
 
         public async Task DeleteAsync(int id)

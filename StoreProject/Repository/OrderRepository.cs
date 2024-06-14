@@ -26,7 +26,7 @@ namespace StoreProject.Repository
             return await _context.Orders
                                  .AsNoTracking()
                                  .Include(x => x.OrderItems)
-                                 .ThenInclude(x => x.OrderProductInformation)
+                                 .ThenInclude(x => x.OrderInformation)
                                  .FirstOrDefaultAsync(x => x.Id == Id);
         }
     }
