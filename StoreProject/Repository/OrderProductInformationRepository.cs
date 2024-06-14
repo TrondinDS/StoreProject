@@ -5,7 +5,7 @@ using StoreProject.Repository.Interfaces;
 
 namespace StoreProject.Repository
 {
-    public class OrderProductInformationRepository : GenericRepository<OrderProductInformation, int>, IOrderProductInformationRepository
+    public class OrderProductInformationRepository : GenericRepository<OrderInformation, int>, IOrderProductInformationRepository
     {
         public OrderProductInformationRepository(ApplicationContext context) : base(context)
         {

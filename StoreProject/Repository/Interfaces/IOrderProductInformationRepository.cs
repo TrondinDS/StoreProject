@@ -3,7 +3,7 @@ using StoreProject.Repository.Generic;
 
 namespace StoreProject.Repository.Interfaces
 {
-    public interface IOrderProductInformationRepository : IGenericRepository<OrderProductInformation, int>
+    public interface IOrderProductInformationRepository : IGenericRepository<OrderInformation, int>
     {
     }
 }

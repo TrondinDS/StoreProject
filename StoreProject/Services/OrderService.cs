@@ -13,46 +13,7 @@ namespace StoreProject.Services
 
         public async Task<Order> CreateOrder(int UserId, Dictionary<int, int> orders)
         {
-            var unavailableProduct = await productRepository.GetCheckUnavailableProductsInOrderAsync(orders);
-
-            if (unavailableProduct.Any()) return null;
-
-            var requestedProducts = await productRepository.GetAllByIdAsync(orders.Select(x => x.Key).ToArray());
-            var requestedProductsDict = requestedProducts.ToDictionary(x => x.Id, x => x);
-
-            var orderItems = new List<OrderItem>();
-            var orderProductInformation = new List<OrderProductInformation>();
-
-            foreach (var orderItem in orders)
-            {
-                var newOrderItem = new OrderItem()
-                {
-                    
-                };
-
-                var newOrderProductInformation = new OrderProductInformation()
-                {
-                    ProductId = orderItem.Key,
-                    OrderItem = newOrderItem,
-                    CountProduct = orderItem.Value                    
-                };
-
-                orderItems.Add(newOrderItem);
-                orderProductInformation.Add(newOrderProductInformation);
-            }
-            var newOrder = new Order()
-            {
-                DateCreate = DateTime.Now,
-                UserId = UserId,
-                OrderItems = orderItems
-            };
-
-            await productRepository.UpdateProductCount(orders);
-            await orderProductInformationRepository.AddAsync(orderProductInformation.ToArray());
-            await orderItemRepository.AddAsync(orderItems.ToArray());
-            await orderRepository.AddAsync(newOrder);
-            await orderItemRepository.SaveChangesAsync();
-            return newOrder;
+            //переделать
         }
 
         public async Task DeleteAsync(int id)
