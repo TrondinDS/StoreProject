@@ -8,6 +8,11 @@ namespace StoreProject.Services
     {
         protected readonly IProductRepository productRepository;
 
+        public ProductService(IProductRepository productRepository)
+        {
+            this.productRepository = productRepository;
+        }
+
         public async Task AddAsync(Product product)
         {
             await productRepository.AddAsync(product);

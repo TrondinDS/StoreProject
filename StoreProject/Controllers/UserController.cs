@@ -78,9 +78,9 @@ namespace StoreProject.Controllers
                 return NotFound();
             }
 
-            var customer = mapper.Map<User>(userDto);
-            await userService.UpdateAsync(customer);
-            return NoContent();
+            var user = mapper.Map<User>(userDto);
+            await userService.UpdateAsync(user);
+            return Ok(user);
         }
 
         /// <summary>

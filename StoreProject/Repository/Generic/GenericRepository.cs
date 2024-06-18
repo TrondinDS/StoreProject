@@ -25,9 +25,30 @@ namespace StoreProject.Repository.Generic
             dbSet.RemoveRange(entity);
         }
 
-        public void Update(params T[] entity)
+        public void Update(params T[] entities)
         {
-            dbSet.UpdateRange(entity);
+            foreach (var entity in entities)
+            {
+                var key = GetEntityKey(entity);
+                var existingEntity = dbSet.Find(key);
+
+                if (existingEntity != null)
+                {
+                    // Обновляем значения текущей сущности
+                    _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+                }
+                else
+                {
+                    // Добавляем новую сущность
+                    dbSet.Update(entity);
+                }
+            }
+        }
+
+        private object GetEntityKey(T entity)
+        {
+            var keyName = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey().Properties.Select(x => x.Name).Single();
+            return entity.GetType().GetProperty(keyName).GetValue(entity, null);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

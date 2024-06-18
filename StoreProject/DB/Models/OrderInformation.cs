@@ -4,7 +4,7 @@ namespace StoreProject.DB.Models
 {
     public class OrderInformation : IsDelete
     {
-        public int Id { get; set; }
+        public int OrderInformationId { get; set; }
         public bool IsDeleted { get; set; }
         public int CountProduct { get; set; }
         public float Price { get; set; }

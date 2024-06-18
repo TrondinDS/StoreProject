@@ -11,6 +11,14 @@ namespace StoreProject.Services
         protected readonly IOrderInformationRepository orderProductInformationRepository;
         protected readonly IProductRepository productRepository;
 
+        public OrderService(IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, IOrderInformationRepository orderProductInformationRepository, IProductRepository productRepository)
+        {
+            this.orderRepository = orderRepository;
+            this.orderItemRepository = orderItemRepository;
+            this.orderProductInformationRepository = orderProductInformationRepository;
+            this.productRepository = productRepository;
+        }
+
         public async Task<Order> CreateOrder(int UserId, Dictionary<int, int> orders)
         {
             var productInOrderUnvaliable = await productRepository.GetCheckUnavailableProductsInOrderAsync(orders);

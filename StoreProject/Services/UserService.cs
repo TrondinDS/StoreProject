@@ -8,6 +8,11 @@ namespace StoreProject.Services
     {
         protected readonly IUserRepository userRepository;
 
+        public UserService(IUserRepository userRepository)
+        {
+            this.userRepository = userRepository;
+        }
+
         public async Task AddAsync(User customer)
         {
             await userRepository.AddAsync(customer);

@@ -8,7 +8,6 @@ namespace StoreProject.DB.Context
     {
         public ApplicationContext(DbContextOptions dbContext) : base (dbContext)
         {
-            Database.EnsureCreated();
         }
 
         public DbSet<User> Users { get; set; }
@@ -27,10 +26,14 @@ namespace StoreProject.DB.Context
         {
             modelBuilder.Entity<User>().HasQueryFilter(x => x.IsDeleted == false);
             modelBuilder.Entity<Order>().HasQueryFilter(x => x.IsDeleted == false);
-            modelBuilder.Entity<OrderItem>().HasQueryFilter(x => x.IsDeleted == false);
             modelBuilder.Entity<ProductType>().HasQueryFilter(x => x.IsDeleted == false);
             modelBuilder.Entity<Product>().HasQueryFilter(x => x.IsDeleted == false);
-            modelBuilder.Entity<OrderInformation>().HasQueryFilter(x => x.IsDeleted == false);
+
+            modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.OrderInformation)
+            .WithOne(oi => oi.OrderItem)
+            .HasForeignKey<OrderInformation>(oi => oi.OrderItemId)
+            .IsRequired();
         }
     }
 }

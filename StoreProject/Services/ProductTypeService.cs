@@ -8,6 +8,11 @@ namespace StoreProject.Services
     {
         protected IProductTypeRepository productTypeRepository;
 
+        public ProductTypeService(IProductTypeRepository productTypeRepository)
+        {
+            this.productTypeRepository = productTypeRepository;
+        }
+
         public async Task AddAsync(ProductType productType)
         {
             await productTypeRepository.AddAsync(productType);
