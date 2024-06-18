@@ -16,6 +16,7 @@ namespace StoreProject.Services
         public async Task AddAsync(Product product)
         {
             await productRepository.AddAsync(product);
+            await productRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)

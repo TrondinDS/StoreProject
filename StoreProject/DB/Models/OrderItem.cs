@@ -4,7 +4,7 @@ namespace StoreProject.DB.Models
 {
     public class OrderItem : IsDelete
     {
-        public int OrderItemId { get; set; }
+        public int Id { get; set; }
         public bool IsDeleted { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }

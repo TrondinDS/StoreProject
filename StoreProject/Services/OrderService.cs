@@ -35,21 +35,22 @@ namespace StoreProject.Services
             {
                 var newOrderItem = new OrderItem()
                 {
-                    ProductId = orderItem.Key
+                    ProductId = orderItem.Key                    
                 };
 
-                var newOrderProductInformation = new OrderInformation()
+                var newOrderInformation = new OrderInformation()
                 {
                     OrderItem = newOrderItem,
-                    CountProduct = orderItem.Value
+                    CountProduct = orderItem.Value,
+                    Price = requestedProductsDict[orderItem.Key].Price
                 };
 
                 orderItems.Add(newOrderItem);
-                orderProductInformation.Add(newOrderProductInformation);
+                orderProductInformation.Add(newOrderInformation);
             }
             var newOrder = new Order()
             {
-                DateCreate = DateTime.Now,
+                DateCreate = DateTime.UtcNow,
                 UserId = UserId,
                 OrderItems = orderItems
             };

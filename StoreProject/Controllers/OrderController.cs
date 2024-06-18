@@ -54,8 +54,12 @@ namespace StoreProject.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateOrder(OrderCreateDTO createOrderDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var order = await orderService.CreateOrder(createOrderDto.UserId, createOrderDto.OrderItems);
-            //order = await orderService.GetFullOrder(order.OrderId);
             var orderResultDto = mapper.Map<OrderDTO>(order);
             return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, orderResultDto);
         }

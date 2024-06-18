@@ -34,6 +34,19 @@ namespace StoreProject.DB.Context
             .WithOne(oi => oi.OrderItem)
             .HasForeignKey<OrderInformation>(oi => oi.OrderItemId)
             .IsRequired();
+
+            modelBuilder.Entity<Order>()
+            .HasMany(o => o.OrderItems)
+            .WithOne(oi => oi.Order)
+            .HasForeignKey(oi => oi.OrderId);
+
+            modelBuilder.Entity<Order>()
+            .Navigation(o => o.OrderItems)
+            .AutoInclude();
+
+            modelBuilder.Entity<OrderItem>()
+            .Navigation(oi => oi.OrderInformation)
+            .AutoInclude();
         }
     }
 }
