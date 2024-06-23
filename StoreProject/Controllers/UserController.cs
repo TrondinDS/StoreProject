@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreProject.DB.DTO.User;
 using StoreProject.DB.Models;
@@ -8,6 +9,7 @@ namespace StoreProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
