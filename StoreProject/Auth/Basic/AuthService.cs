@@ -1,11 +1,11 @@
 ﻿
 using System.Data;
 
-namespace StoreProject.Auth
+namespace StoreProject.Auth.Basic
 {
     public class AuthService : IAuthService
     {
-        public AuthService() 
+        public AuthService()
         {
         }
 

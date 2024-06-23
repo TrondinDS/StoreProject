@@ -6,8 +6,7 @@ using Microsoft.OpenApi.Models;
 using StoreProject.DB.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
-using ShopOrderSystem.Utility.Auth;
-using StoreProject.Auth;
+using StoreProject.Auth.Basic;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,4 @@
-﻿namespace StoreProject.Auth
+﻿namespace StoreProject.Auth.Basic
 {
     public class User
     {

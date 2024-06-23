@@ -3,9 +3,8 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text;
-using StoreProject.Auth;
 
-namespace ShopOrderSystem.Utility.Auth
+namespace StoreProject.Auth.Basic
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
