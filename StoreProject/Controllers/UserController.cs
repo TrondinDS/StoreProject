@@ -9,7 +9,8 @@ namespace StoreProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;

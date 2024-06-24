@@ -7,8 +7,15 @@ using StoreProject.DB.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using StoreProject.Auth.Basic;
+using StoreProject.Auth.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<SettingsJWT>(builder.Configuration.GetSection("JwtSettings"));
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<SettingsJWT>();
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IOrderItemRepository, OrderItemRepository>();
@@ -36,13 +43,14 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API для системы заказов магазина"
     });
 
-    options.AddSecurityDefinition("Basic", new OpenApiSecurityScheme
+    // Удаляем старую аутентификацию Basic и добавляем JWT
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Basic auth",
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Scheme = "Basic",
-        Type = SecuritySchemeType.Http
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -50,7 +58,7 @@ builder.Services.AddSwaggerGen(options =>
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Basic" }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
             new List<string>(){ }
         }
@@ -71,10 +79,31 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
                opt.UseNpgsql(builder.Configuration.GetConnectionString("ShopOrderDB"))
 );
 
-builder.Services.AddAuthentication("Basic")
-            .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
 
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+    };
+});
+
+builder.Services.AddAuthorization();
+
+//builder.Services.AddAuthentication("Basic")
+//            .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+
+//builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
@@ -87,6 +116,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
